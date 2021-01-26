@@ -1,21 +1,22 @@
-provider "aws" {
-  region = "eu-west-1"
+provider "google" {
+  region = "us-east1"
+  zone    = "us-east1-c"
 }
 
-resource "aws_instance" "web" {
-  ami                    = "ami-25488752"
-  instance_type          = "t2.micro"
-  vpc_security_group_ids = ["${aws_security_group.web.id}"]
-  user_data              = "${file("template/user_data.sh")}"
+resource "google_compute_instance" "vm_instance" {
+  name         = "terraform-instance"
+  machine_type = "f1-micro"
 
-  
-}
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-9"
+    }
+  }
 
-resource "aws_security_group" "web" {
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  network_interface {
+    # A default network is created for all GCP projects
+    network = "default"
+    access_config {
+    }
   }
 }
