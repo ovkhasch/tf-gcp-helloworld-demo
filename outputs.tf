@@ -1,3 +1,3 @@
 output "url" {
-  value = "http://${aws_instance.web.public_ip}"
+  value = "http://${google_compute_instance.web.public_ip}"
 }
